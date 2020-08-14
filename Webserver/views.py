@@ -1,15 +1,16 @@
-from flask import render_template, redirect, url_for, flash, session, request
-from models import User, db, Note
-from app import app
+from flask import render_template, redirect, url_for, flash, session, request, Blueprint
+from .models import User, Note
+from .extensions import db
 
+main = Blueprint("main", __name__, static_folder = "static", template_folder = "templates")
 
-@app.route("/",  methods=["GET"])
+@main.route("/",  methods=["GET"])
 def home():
     # you can define a html-file as .jinja to get jinja syntax-highliting
     return render_template("index.html")
 
 
-@app.route("/login", methods=["POST"])# methods=["POST", "GET"] To specify that a page works with both POST and GET requests
+@main.route("/login", methods=["POST"])# methods=["POST", "GET"] To specify that a page works with both POST and GET requests
 def login():
     username = request.form["nmHe"] #He because of header
     userpassword = request.form["pwHe"]
@@ -30,7 +31,7 @@ def login():
         flash("no User found", "info")
         return render_template("index.html")
 
-@app.route("/logout")
+@main.route("/logout")
 def logout():
     if "username" in session:
         # retruns none if user isn't a key in the dictionary (none is null in java)
@@ -42,11 +43,11 @@ def logout():
 
 
 
-@app.route("/register",  methods=["GET"])
+@main.route("/register",  methods=["GET"])
 def registerGET():
     return render_template("register.html")
 
-@app.route("/register",  methods=["POST"])
+@main.route("/register",  methods=["POST"])
 def registerPOST():
     username = request.form["nmRe"]
     userpassword = request.form["pwRe"]
@@ -61,13 +62,13 @@ def registerPOST():
 
 
 
-@app.route("/user", methods=["POST", "GET"])
+@main.route("/user", methods=["POST", "GET"])
 def user():
     users = User.query.all()
     #session["users"] = users
     return render_template("user.html",users=users)
 
-@app.route("/profile", methods=["GET"])
+@main.route("/profile", methods=["GET"])
 def profileGET():
     note = ""
     username = session["username"]
@@ -77,7 +78,7 @@ def profileGET():
         return render_template("profile.html", userNotes=userNotes)
     return render_template("profile.html")
 
-@app.route("/profile", methods=["POST"])
+@main.route("/profile", methods=["POST"])
 def profilePOST():
     note = request.form["note"]
     noteTitle = request.form["title"]
