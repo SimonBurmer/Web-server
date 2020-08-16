@@ -13,6 +13,6 @@ def create_app():
     app.secret_key ="uiusdakasfkjfasd4389078532turieahfg87z5021gkjdha43178dsiugqkjh15478" #you have to look over it again
     app.permanent_session_lifetime = timedelta(minutes = 5) #defines how long things are saved in the session
 
-    app.register_blueprint(main)
-    
+    app.register_blueprint(main, url_prefix="/")
+
     return app
