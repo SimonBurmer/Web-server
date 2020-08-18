@@ -38,7 +38,7 @@ def logout():
         session.pop("username", None)
         flash("You have been logged out!", "info")
     # Importend! here index.X
-    return redirect(url_for("index.home")) # the better solution would be return render_template("index.html")
+    return redirect(url_for("main.home")) # the better solution would be return render_template("index.html")
 
 
 
@@ -91,5 +91,5 @@ def profilePOST():
     db.session.commit()
 
     flash("Your note is saved!", "info")
-    return redirect(url_for("index.profileGET"))
+    return redirect(url_for("main.profileGET"))
 
